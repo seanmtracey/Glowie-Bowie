@@ -42,8 +42,8 @@ function main(params){
                             } else {
 
                                 MQTT_CLIENT.end();
-
                                 resolve(response);
+                                
                             }
                         });  
 
