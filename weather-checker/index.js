@@ -32,7 +32,6 @@ function main(params){
                     }
                 })
                 .then(response => {
-                    console.log(response);
 
                     return new Promise( (resolve, reject) => {
 
