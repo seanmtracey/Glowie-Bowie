@@ -1,9 +1,16 @@
+from dotenv import load_dotenv
 import paho.mqtt.client as mqtt
-import board
-import neopixel
-import json
+import board, neopixel, json, os
 
-pixels = neopixel.NeoPixel(board.D16, 36, brightness=0.5, auto_write = False, pixel_order = neopixel.RGBW)
+load_dotenv(verbose = True)
+
+MQTT_BROKER = os.getenv("MQTT_BROKER")
+
+if MQTT_BROKER is None:
+    print("No MQTT_BROKER environment variable has been set. Exiting")
+    sys.exit()
+
+pixels = neopixel.NeoPixel(board.D16, 36, brightness = 0.5, auto_write = False, pixel_order = neopixel.RGBW)
 
 def display_lights(matrix):
 
@@ -42,5 +49,5 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
-client.connect("mqtt.eclipse.org", 1883, 60)
+client.connect(MQTT_BROKER, 1883, 60)
 client.loop_forever()
