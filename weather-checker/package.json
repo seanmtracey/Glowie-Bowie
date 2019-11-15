@@ -5,13 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-action" : "ibmcloud wsk action create glowie-bowie-weather-checker index.js --native Archive.zip  --kind nodejs:10",
-    "deploy-action" : "ibmcloud wsk action update glowie-bowie-weather-checker index.js --native Archive.zip --kind nodejs:10"
+    "create-action": "ibmcloud wsk action create glowie-bowie-weather-checker index.js --native Archive.zip  --kind nodejs:10",
+    "deploy-action": "ibmcloud wsk action update glowie-bowie-weather-checker index.js --native Archive.zip --kind nodejs:10"
   },
-  "keywords": ["Serverless", "Bowie", "Weather"],
+  "keywords": [
+    "Serverless",
+    "Bowie",
+    "Weather",
+    "MQTT"
+  ],
   "author": "Sean M. Tracey",
   "license": "MIT",
   "dependencies": {
+    "mqtt": "^3.0.0",
     "node-fetch": "^2.6.0"
   }
 }
