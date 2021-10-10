@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A serverless function which gets the weather for a given location at regular intervals",
   "main": "index.js",
-  "private" : "true",
+  "private": "true",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-function": "",
-    "update-function": "rm -f Archive.zip && zip -r Archive.zip ./ -x .env && aws lambda update-function-code --function-name glowie_bowie_get_weather --zip-file fileb://Archive.zip"
+    "update-function": "rm -f Archive.zip && zip -r Archive.zip ./ -x .env -x invoke.js && aws lambda update-function-code --function-name glowie_bowie_set_lights --zip-file fileb://Archive.zip"
   },
   "keywords": [
     "Serverless",
@@ -18,7 +18,8 @@
   "author": "Sean M. Tracey",
   "license": "MIT",
   "dependencies": {
+    "aws-iot-device-sdk": "^2.2.11",
     "dotenv": "^10.0.0",
-    "node-fetch": "^2.6.5"
+    "uuid": "^8.3.2"
   }
 }
