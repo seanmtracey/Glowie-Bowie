@@ -6,3 +6,4 @@ node_modules
 invoker.js
 venv
 quick_mqtt.py
+quick*

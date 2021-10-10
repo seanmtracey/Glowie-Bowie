@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "A serverless function which gets the weather for a given location at regular intervals",
   "main": "index.js",
+  "private" : "true",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-action": "ibmcloud wsk action create glowie-bowie-weather-checker index.js --native Archive.zip  --kind nodejs:10",
-    "deploy-action": "ibmcloud wsk action update glowie-bowie-weather-checker index.js --native Archive.zip --kind nodejs:10"
+    "create-action": "",
+    "update-action": "rm -f Archive.zip && zip -r Archive.zip ./ -x .env && aws lambda update-function-code --function-name glowie_bowie_get_weather --zip-file fileb://Archive.zip"
   },
   "keywords": [
     "Serverless",
@@ -17,7 +18,7 @@
   "author": "Sean M. Tracey",
   "license": "MIT",
   "dependencies": {
-    "mqtt": "^3.0.0",
-    "node-fetch": "^2.6.0"
+    "dotenv": "^10.0.0",
+    "node-fetch": "^2.6.5"
   }
 }

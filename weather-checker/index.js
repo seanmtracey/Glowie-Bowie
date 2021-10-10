@@ -1,66 +1,25 @@
+require('dotenv').config( {silent : process.env.NODE_ENV === "production" } )
 const fetch = require('node-fetch');
-const mqtt = require('mqtt');
 
-const weather_api_host = "api.openweathermap.org";
-const weather_api_path = "data/2.5/weather";
+const weather_data_api_request_url = `https://${process.env.WEATHER_API_HOST}/${process.env.WEATHER_API_PATH}?lat=${process.env.TARGET_LATITUDE}&lon=${process.env.TARGET_LONGITUDE}&units=${ process.env.WEATHER_UNITS || "metric" }&APPID=${process.env.WEATHER_API_KEY}`;
 
-function main(params){
+exports.handler =  async function(event, context) {
 
-    const weather_data_api_request_url = `https://${weather_api_host}/${weather_api_path}?lat=${params.latitude}&lon=${params.longitude}&unit=${ params.unit || "metric" }&APPID=${params.WEATHER_API_KEY}`;
-
-    const MQTT_CLIENT  = mqtt.connect(`mqtt://${params.MQTT_BROKER}`);
-
-    return new Promise( (resolve, reject) => {
-
-            MQTT_CLIENT.on('connect', function () {
-                resolve();
-            });
-
-            MQTT_CLIENT.on('error', function (err) {
-                reject();
-            });
-
+    return fetch(weather_data_api_request_url)
+        .then(res => {
+            if(res.ok){
+                return res.json();
+            } else {
+                throw res;
+            }
         })
-        .then(function(){
-
-            return fetch(weather_data_api_request_url)
-                .then(res => {
-                    if(res.ok){
-                        return res.json();
-                    } else {
-                        throw res;
-                    }
-                })
-                .then(response => {
-
-                    return new Promise( (resolve, reject) => {
-
-                        MQTT_CLIENT.publish('brixton-weather-report', JSON.stringify(response), (err) => {
-                            if(err){
-                                reject(err);
-                            } else {
-
-                                MQTT_CLIENT.end();
-                                resolve(response);
-                                
-                            }
-                        });  
-
-                    });
-
-                })
-                .catch(err => {
-                    
-                    console.log(err);
-
-                    throw { "err" : err };
-
-                })
-            ;
-
+        .catch(err => {
+            
+            console.log(err);
+    
+            throw { "err" : err };
+    
         })
     ;
-
+    
 }
-
-exports.main = main;
