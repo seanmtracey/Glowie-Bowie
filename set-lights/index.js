@@ -90,9 +90,10 @@ exports.handler =  async function(event, context) {
         device.on('connect', function() {
             console.log('connect');
 
-            const lightSettings = setLights( convertWeatherIdToType(data.weather.id), data.main.feels_like);
+            const weatherType = convertWeatherIdToType(data.weather.id);
+            const lightSettings = setLights(weatherType, data.main.feels_like);
 
-            device.publish('glowie_bowie/lights/update', JSON.stringify({ lightSettings : lightSettings, time : Date.now() / 1000 | 0 }), { qos : 1 }, (err) => {
+            device.publish('glowie_bowie/lights/update', JSON.stringify({ lightSettings : lightSettings, time : Date.now() / 1000 | 0 }, weatherType : weatherType ), { qos : 1 }, (err) => {
 
                if(err){
                     reject(err);
