@@ -53,7 +53,7 @@ def handlePayload(client, userdata, message):
 
 	display_lights(0, 20, leftColorTuple)
 	display_lights(43, 61, leftColorTuple)
-	display_lights(76, 97, rightColorTuple)
+	display_lights(78, 97, rightColorTuple)
 
 
 CA_PATH = os.path.join(os.path.dirname(__file__), os.getenv("CA_PATH"))
@@ -77,11 +77,13 @@ rightColorTuple = (0,255,0)
 
 display_lights(0, 20, leftColorTuple)
 display_lights(43, 61, leftColorTuple)
-display_lights(76, 100, rightColorTuple)
+display_lights(78, 100, rightColorTuple)
 
 pixels.show()
 
 time.sleep(5)
+
+# exit()
 
 pixels.fill( (0,0,0,0) )
 pixels.show()
