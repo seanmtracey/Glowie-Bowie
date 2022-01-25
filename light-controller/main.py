@@ -51,11 +51,17 @@ def handlePayload(client, userdata, message):
 	print("Left strip color will be:", leftColorTuple)
 	print("Right strip color will be:", rightColorTuple)
 
-	display_lights(0, 59, leftColorTuple)
-	display_lights(59, 79, rightColorTuple)
+	display_lights(0, 20, leftColorTuple)
+	display_lights(43, 61, leftColorTuple)
+	display_lights(76, 97, rightColorTuple)
 
 
-myMQTTClient.configureCredentials(os.getenv("CA_PATH"), os.getenv("PRIVATE_KEY_PATH"), os.getenv("CERTIFICATE_PATH"))
+CA_PATH = os.path.join(os.path.dirname(__file__), os.getenv("CA_PATH"))
+PRIVATE_KEY_PATH = os.path.join(os.path.dirname(__file__), os.getenv("PRIVATE_KEY_PATH"))
+CERTIFICATE_PATH = os.path.join(os.path.dirname(__file__), os.getenv("CERTIFICATE_PATH"))
+print(CA_PATH)
+
+myMQTTClient.configureCredentials(CA_PATH, PRIVATE_KEY_PATH, CERTIFICATE_PATH)
 myMQTTClient.configureOfflinePublishQueueing(-1)
 myMQTTClient.configureDrainingFrequency(2)
 myMQTTClient.configureConnectDisconnectTimeout(10)
@@ -69,8 +75,9 @@ myMQTTClient.subscribe(MQTT_TOPIC, 1, handlePayload)
 leftColorTuple = (255,0,0)
 rightColorTuple = (0,255,0)
 
-display_lights(0, 59, leftColorTuple)
-display_lights(60, 79, rightColorTuple)
+display_lights(0, 20, leftColorTuple)
+display_lights(43, 61, leftColorTuple)
+display_lights(76, 100, rightColorTuple)
 
 pixels.show()
 
