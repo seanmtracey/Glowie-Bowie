@@ -20,6 +20,8 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=1.0, auto_write=False, pixel_order=ORDER
 )
 
+lastWeatherUpdate = None
+loopRainbow = False
 
 def display_lights(start_pixel = 0, end_pixel = 0, color = (255, 255, 255)):
 
@@ -61,6 +63,9 @@ def wheel(pos):
 
 
 def rainbow_cycle(wait):
+
+    global loopRainbow
+
     for j in range(255):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j
@@ -68,18 +73,39 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
-def trigger_rainbow_cycle(client, userdata, message):
-    
-    print("Engaging rainbow cycle")
+    if loopRainbow == True:
+        rainbow_cycle(wait)
 
-    rainbow_cycle(0.010)
+def trigger_rainbow_cycle(client, userdata, message):
+
+    global loopRainbow
+    
+    print("Received a new message from topic: ", message.topic)
+    payload = json.loads(message.payload)
+
+    if payload['state'] == "on":
+        
+        loopRainbow = True
+        rainbow_cycle(0.010)
+
+    else :
+        loopRainbow = False
+        handlePayload(None, None, lastWeatherUpdate)
+
 
 def handlePayload(client, userdata, message):
+
+    global lastWeatherUpdate
+    global loopRainbow
+
 	print("Received a new message from topic: ", message.topic)
 	print("\t", json.loads(message.payload))
 	print("\n\n")
 
 	info = json.loads(message.payload)
+    
+    lastWeatherUpdate = json.dumps(info)
+
 	print(info)
 	leftColorTuple = (info['lightSettings']['leftStrip']['color'][0], info['lightSettings']['leftStrip']['color'][1], info['lightSettings']['leftStrip']['color'][2])
 	rightColorTuple = (info['lightSettings']['rightStrip']['color'][0], info['lightSettings']['rightStrip']['color'][1], info['lightSettings']['rightStrip']['color'][2])
@@ -87,11 +113,13 @@ def handlePayload(client, userdata, message):
 	print("Left strip color will be:", leftColorTuple)
 	print("Right strip color will be:", rightColorTuple)
 
-	display_lights(0, 20, leftColorTuple)
-	display_lights(43, 61, leftColorTuple)
-	display_lights(78, 97, rightColorTuple)
+    if loopRainbow == False:
 
+        display_lights(0, num_pixels, (0,0,0))
 
+        display_lights(0, 20, leftColorTuple)
+        display_lights(43, 61, leftColorTuple)
+        display_lights(78, 97, rightColorTuple)
 
 
 CA_PATH = os.path.join(os.path.dirname(__file__), os.getenv("CA_PATH"))
