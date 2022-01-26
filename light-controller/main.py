@@ -83,6 +83,8 @@ def trigger_rainbow_cycle(client, userdata, message):
 	print("Received a new message from topic: ", message.topic)
 	payload = json.loads(message.payload)
 
+	print(payload)
+	print(payload['state'] == "on")
 	if payload['state'] == "on":
 		
 		loopRainbow = True
@@ -149,8 +151,6 @@ display_lights(78, 100, rightColorTuple)
 pixels.show()
 
 time.sleep(5)
-
-# exit()
 
 pixels.fill( (0,0,0,0) )
 pixels.show()
