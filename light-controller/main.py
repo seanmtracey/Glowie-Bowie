@@ -79,6 +79,7 @@ def rainbow_cycle(wait):
 def trigger_rainbow_cycle(client, userdata, message):
 
 	global loopRainbow
+	global lastWeatherUpdate
 	
 	print("Received a new message from topic: ", message.topic)
 	payload = json.loads(message.payload)
@@ -92,7 +93,8 @@ def trigger_rainbow_cycle(client, userdata, message):
 
 	else :
 		loopRainbow = False
-		handlePayload(None, None, lastWeatherUpdate)
+		if lastWeatherUpdate != None:
+			handlePayload(None, None, lastWeatherUpdate)
 
 
 def handlePayload(client, userdata, message):
