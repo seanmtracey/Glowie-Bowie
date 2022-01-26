@@ -75,6 +75,8 @@ def rainbow_cycle(wait, loopCount = 0):
 
 	if loopRainbow == True and loopCount < 100:
 		rainbow_cycle(wait, loopCount + 1)
+	else:
+		loopRainbow = False
 
 def trigger_rainbow_cycle(client, userdata, message):
 
