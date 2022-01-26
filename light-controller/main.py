@@ -106,7 +106,7 @@ def handlePayload(client, userdata, message):
 
 	info = json.loads(message.payload)
 	
-	lastWeatherUpdate = json.dumps(info)
+	lastWeatherUpdate = message
 
 	print(info)
 	leftColorTuple = (info['lightSettings']['leftStrip']['color'][0], info['lightSettings']['leftStrip']['color'][1], info['lightSettings']['leftStrip']['color'][2])
