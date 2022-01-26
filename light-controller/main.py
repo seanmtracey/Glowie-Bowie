@@ -62,7 +62,7 @@ def wheel(pos):
 	return (r, g, b) if ORDER in (neopixel.RGB, neopixel.GRB) else (r, g, b, 0)
 
 
-def rainbow_cycle(wait):
+def rainbow_cycle(wait, loopCount = 0):
 
 	global loopRainbow
 
@@ -73,8 +73,8 @@ def rainbow_cycle(wait):
 		pixels.show()
 		time.sleep(wait)
 
-	if loopRainbow == True:
-		rainbow_cycle(wait)
+	if loopRainbow == True and loopCount < 100:
+		rainbow_cycle(wait, loopCount + 1)
 
 def trigger_rainbow_cycle(client, userdata, message):
 
